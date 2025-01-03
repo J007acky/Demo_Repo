@@ -52,7 +52,7 @@ pipeline {
                     echo 'Terraform Plan Stage'
                     withCredentials([azureServicePrincipal(credentialsId:'AZURE_CRED',subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID',clientIdVariable: 'AZURE_CLIENT_ID',clientSecretVariable: 'AZURE_CLIENT_SECRET',tenantIdVariable: 'AZURE_TENANT_ID')]) { 
                         sh '''
-                          terraform -chdir="Terraform IAC" \
+                          terraform -chdir="Terraform IAC" plan \
                           -var "blob_url=$BLOB_URL" \
                           -var "subscription_id=$AZURE_SUBSCRIPTION_ID" \
                           -var "tenant_id=$AZURE_TENANT_ID" \
@@ -70,7 +70,7 @@ pipeline {
                     echo 'Terraform Apply Stage'
                     withCredentials([azureServicePrincipal('AZURE_CRED')]) {
                         sh '''
-                          terraform -chdir='Terraform IAC' \
+                          terraform -chdir='Terraform IAC' apply\
                           --var "blob_url"="$BLOB_URL" \
                           --var "subscription_id=$AZURE_SUBSCRIPTION_ID" \
                           --var "tenant_id=$AZURE_TENANT_ID" \
